@@ -221,9 +221,9 @@ document.querySelectorAll('#caseStudyGrid [data-chart]').forEach(el => chartBarO
    ---------------------------------------------------------------- */
 const artists = [
   { name: 'Jaquarious indie',genre: 'Indie Pop',          tiktok: '2.2M',  spotify: '200k',  duration: '2 weeks', image: 'images/jaquarious-indie.jpg', },
-  { name: 'wer$e',           genre: 'Indie',              tiktok: '1.5M',  spotify: '170K',  duration: '2 weeks', image: 'images/were.jpg', },
-  { name: 'exhibit',         genre: 'Ambient music',      tiktok: '3M'   , spotify: '500k',  duration: '10 weeks', image: 'The Kult website\images\exhibit.jpg', },
-  { name: 'The Kavities',    genre: 'Dream Pop',          tiktok: '2.5M',  spotify: '250k',  duration: '3 weeks', image: 'images/the-kavities.jpg', },
+  { name: 'wer$e',           genre: 'Indie',              tiktok: '1.5M',  spotify: '170K',  duration: '2 weeks', image: 'images/wer$e.jpg', },
+  { name: 'exhibit',         genre: 'Ambient music',      tiktok: '3M'   , spotify: '500k',  duration: '10 weeks', image: 'images/exhibit.jpg', },
+  { name: 'The Kavities',    genre: 'Dream Pop',          tiktok: '2.5M',  spotify: '250k',  duration: '3 weeks', image: 'images/thekavities.jpg', },
   { name: 'Predayed',        genre: 'Rap',                tiktok: '6M',    spotify: '500K',  duration: '4 weeks', image: 'images/predayed.jpg', },
   { name: 'ifwmyglokk',      genre: 'indie',              tiktok: '3M',    spotify: '400k',  duration: '2 weeks', image: 'images/ifwmyglokk.jpg', },
   { name: 'razors',          genre: 'indie',              tiktok: '1.5M',  spotify: '30K',   duration:  '1 week', image: 'images/razors.jpg', },
@@ -242,13 +242,27 @@ artists.forEach((a, i) => {
   node.querySelector('.tiktok-views').textContent   = `+${a.tiktok}`;
   node.querySelector('.spotify-streams').textContent = `+${a.spotify}`;
 
+  // ADD — wire up the artist photo
+  const img = node.querySelector('.artist-image');
+  const placeholder = node.querySelector('.placeholder-icon');
+
+  img.alt = a.name;
+  img.onload = () => {
+    img.classList.remove('hidden');
+    placeholder.classList.add('hidden');
+  };
+  img.onerror = () => {
+    console.warn(`Image not found for ${a.name}: ${a.image}`);
+  };
+  img.src = a.image;
+  // END ADD
+
   // Stagger entrance in groups of 4 across the grid
   const card = node.querySelector('.reveal');
   card.style.transitionDelay = `${(i % 4) * 0.08}s`;
 
   artistGrid.appendChild(node);
 });
-
 document.querySelectorAll('#artistGrid .reveal').forEach(el => revealObserver.observe(el));
 
 
